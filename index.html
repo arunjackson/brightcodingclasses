@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Claim Scholarship: Only For On-Call Enrollments</title>
+  <title>Secure Your Child's Scholarship - BrightChamps Coding</title>
   <style>
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -26,9 +26,15 @@
     }
     h1 {
       color: #1a1a1a;
-      margin-bottom: 30px;
+      margin-bottom: 10px;
       font-size: 2em;
       font-weight: 300;
+    }
+    .subtitle {
+      color: #666;
+      margin-bottom: 30px;
+      font-size: 1.1em;
+      font-weight: 400;
     }
     .btns {
       margin-bottom: 30px;
@@ -48,6 +54,7 @@
       font-size: 16px;
       font-weight: 500;
       min-width: 140px;
+      position: relative;
     }
     .btns button:hover {
       transform: translateY(-2px);
@@ -55,6 +62,18 @@
     }
     .btns button:active {
       transform: translateY(0);
+    }
+    .btns button.recommended::after {
+      content: "Recommended";
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: #28a745;
+      color: white;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 10px;
+      font-weight: bold;
     }
     select {
       width: 100%;
@@ -172,20 +191,38 @@
       margin-top: 5px; 
       display: none; 
     }
+    .next-step {
+      margin-top: 30px;
+      padding: 20px;
+      background: #f8f9fa;
+      border-radius: 10px;
+      border-left: 4px solid #28a745;
+    }
+    .next-step h4 {
+      margin: 0 0 10px;
+      color: #28a745;
+      font-weight: 600;
+    }
+    .next-step p {
+      margin: 0;
+      color: #666;
+      font-size: 14px;
+    }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>Claim Scholarship<br><small style="font-size: 0.6em; color: #888;">Only For On-Call Enrollments</small></h1>
+    <h1>Secure Your Child's Scholarship</h1>
+    <p class="subtitle">Following your positive experience in the free trial class, extend the learning journey with exclusive scholarship pricing on our proven 1:1 coding curriculum.</p>
     <div class="btns">
       <button onclick="setClasses(45)" aria-label="Select 45 Classes Bundle">Beginner (45 Classes)</button>
       <button onclick="setClasses(90)" aria-label="Select 90 Classes Bundle">Intermediate (90 Classes)</button>
-      <button onclick="setClasses(150)" aria-label="Select 150 Classes Bundle">Advanced (150 Classes)</button>
+      <button onclick="setClasses(150)" aria-label="Select 150 Classes Bundle" class="recommended">Advanced (150 Classes)</button>
     </div>
     <select id="classes" onchange="calculate()" aria-label="Select Number of Classes">
       <option value="45">45 (Beginner)</option>
       <option value="90">90 (Intermediate Champion)</option>
-      <option value="150">150 (Advanced)</option>
+      <option value="150">150 (Advanced) - Recommended</option>
     </select>
     <div class="error" id="errorMsg">Please select a bundle size (45, 90, or 150 classes).</div>
     <div class="grid">
@@ -197,6 +234,7 @@
         </tr>
         <tr><th>Rate per Class</th><td>$25</td></tr>
         <tr><th>Website Price (Full)</th><td>$<span id="websitePrice">1125</span></td></tr>
+        <tr><th>Effective Rate per Class (After Scholarship)</th><td>$<span id="effectiveRate">18.76</span></td></tr>
         <tr><th><strong>Scholarship / Final Payable Price</strong></th>
           <td class="highlight">$<span id="finalPrice">844</span></td>
         </tr>
@@ -212,7 +250,7 @@
           <li>Flexible Scheduling</li>
           <li>Global Exposure</li>
         </ul>
-        <h4>After Payment:</h4>
+        <h4>After Enrollment:</h4>
         <ul>
           <li>No. of classes/week (1 or 2)</li>
           <li>Preferred class timings (with time zone)</li>
@@ -225,8 +263,12 @@
         <strong>Website Discount:</strong> <span id="websiteDisc">0%</span><br>
         <strong>Employee Discount:</strong> 25%<br>
         <strong>Total Discount:</strong> <span id="totalDisc">25%</span><br>
-        <strong>SM Rate per Class:</strong> $<span id="smRate">18.75</span>
+        <strong>SM Rate per Class:</strong> $<span id="smRate">18.8</span>
       </div>
+    </div>
+    <div class="next-step">
+      <h4>Next Steps</h4>
+      <p>Once selected, our team will guide you through a seamless enrollment process tailored to your child's schedule. This scholarship opportunity is time-sensitive—let's empower their coding future today.</p>
     </div>
   </div>
 
@@ -234,7 +276,7 @@
     const bundles = {
       45: '45 (Beginner)',
       90: '90 (Intermediate Champion)',
-      150: '150 (Advanced)'
+      150: '150 (Advanced) - Recommended'
     };
     function setClasses(val) {
       document.getElementById('classes').value = val;
@@ -270,14 +312,18 @@
       const websiteFull = rate * classes;
       const packagePrice = Math.round(smPerClass * classes);
       const finalPrice = packagePrice;
+      const effectiveRate = (finalPrice / classes).toFixed(2);
 
       document.getElementById('websitePrice').innerText = Math.round(websiteFull);
+      document.getElementById('effectiveRate').innerText = effectiveRate;
       document.getElementById('finalPrice').innerText = finalPrice;
 
       // Update breakdown
       document.getElementById('websiteDisc').innerText = (websiteDisc * 100) + '%';
       document.getElementById('totalDisc').innerText = (totalDisc * 100) + '%';
-      document.getElementById('smRate').innerText = smPerClass.toFixed(2);
+      document.getElementById('smRate').innerText = (Math.round(smPerClass * 10) / 10).toFixed(1);
     }
     calculate();
   </script>
+</body>
+</html>
