@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Claim Scholarship: Only For On-Call Enrollments</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      padding: 20px;
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .container {
+      max-width: 800px;
+      width: 100%;
+      background: #ffffff;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    h1 {
+      color: #1a1a1a;
+      margin-bottom: 30px;
+      font-size: 2em;
+      font-weight: 300;
+    }
+    .btns {
+      margin-bottom: 30px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .btns button {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 50px;
+      background: linear-gradient(135deg, #0b5ed7 0%, #007bff 100%);
+      color: #fff;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 16px;
+      font-weight: 500;
+      min-width: 140px;
+    }
+    .btns button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(11, 94, 215, 0.3);
+    }
+    .btns button:active {
+      transform: translateY(0);
+    }
+    select {
+      width: 100%;
+      max-width: 300px;
+      padding: 12px 16px;
+      border-radius: 10px;
+      border: 2px solid #e0e0e0;
+      font-size: 16px;
+      background: #f8f9fa;
+      margin: 0 auto 20px;
+      display: block;
+      transition: border-color 0.3s ease;
+    }
+    select:focus {
+      outline: none;
+      border-color: #0b5ed7;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      margin-bottom: 20px;
+    }
+    @media (max-width: 768px) {
+      .grid { grid-template-columns: 1fr; }
+      body { padding: 10px; }
+      .container { padding: 20px; }
+      h1 { font-size: 1.5em; }
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    }
+    th, td {
+      padding: 15px;
+      text-align: left;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    th {
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      font-weight: 600;
+      color: #555;
+    }
+    .highlight {
+      font-weight: 700;
+      color: #28a745;
+      font-size: 1.2em;
+    }
+    .includes {
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      padding: 25px;
+      border-radius: 15px;
+      text-align: left;
+    }
+    .includes h3 { 
+      margin: 0 0 15px; 
+      color: #1a1a1a; 
+      font-size: 1.3em;
+      font-weight: 500;
+    }
+    .includes h4 { 
+      margin: 20px 0 10px; 
+      color: #555; 
+      font-size: 1.1em;
+      font-weight: 400;
+    }
+    .includes ul { 
+      line-height: 1.6; 
+      margin: 0; 
+      padding-left: 20px;
+      color: #666;
+    }
+    hr { 
+      border: none; 
+      border-top: 1px solid #ddd; 
+      margin: 20px 0; 
+    }
+    .breakdown {
+      background: #f9fafc;
+      padding: 12px;
+      border-radius: 6px;
+      margin-top: 10px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.2s;
+      text-align: left;
+      max-width: 300px;
+      margin: 20px auto;
+    }
+    .breakdown:hover { 
+      background: #e9ecef; 
+    }
+    .breakdown-details {
+      display: none;
+      margin-top: 8px;
+      padding: 12px;
+      border-left: 3px solid #0b5ed7;
+      background: #f0f8ff;
+      border-radius: 4px;
+      font-size: 13px;
+    }
+    .breakdown-details.show { 
+      display: block; 
+    }
+    .breakdown strong {
+      color: #0b5ed7;
+    }
+    .error { 
+      color: #dc3545; 
+      font-size: 14px; 
+      margin-top: 5px; 
+      display: none; 
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Claim Scholarship<br><small style="font-size: 0.6em; color: #888;">Only For On-Call Enrollments</small></h1>
+    <div class="btns">
+      <button onclick="setClasses(45)" aria-label="Select 45 Classes Bundle">Beginner (45 Classes)</button>
+      <button onclick="setClasses(90)" aria-label="Select 90 Classes Bundle">Intermediate (90 Classes)</button>
+      <button onclick="setClasses(150)" aria-label="Select 150 Classes Bundle">Advanced (150 Classes)</button>
+    </div>
+    <select id="classes" onchange="calculate()" aria-label="Select Number of Classes">
+      <option value="45">45 (Beginner)</option>
+      <option value="90">90 (Intermediate Champion)</option>
+      <option value="150">150 (Advanced)</option>
+    </select>
+    <div class="error" id="errorMsg">Please select a bundle size (45, 90, or 150 classes).</div>
+    <div class="grid">
+      <table role="table" aria-label="Pricing Breakdown">
+        <tr><th>OTO</th><td>Coding</td></tr>
+        <tr>
+          <th>Number of Classes</th>
+          <td id="selectedBundle">45 (Beginner)</td>
+        </tr>
+        <tr><th>Rate per Class</th><td>$25</td></tr>
+        <tr><th>Website Price (Full)</th><td>$<span id="websitePrice">1125</span></td></tr>
+        <tr><th><strong>Scholarship / Final Payable Price</strong></th>
+          <td class="highlight">$<span id="finalPrice">844</span></td>
+        </tr>
+      </table>
+      <div class="includes">
+        <h3>Build Real Projects - 1:1 Coding Classes</h3>
+        <h4>Includes:</h4>
+        <ul>
+          <li>Student Dashboard</li>
+          <li>Certificate</li>
+          <li>1:1 Live Classes</li>
+          <li>Free Courses</li>
+          <li>Flexible Scheduling</li>
+          <li>Global Exposure</li>
+        </ul>
+        <h4>After Payment:</h4>
+        <ul>
+          <li>No. of classes/week (1 or 2)</li>
+          <li>Preferred class timings (with time zone)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="breakdown" onclick="toggleBreakdown()" aria-expanded="false" aria-label="Toggle Discount Breakdown">
+      👁️ View Discount Details
+      <div class="breakdown-details" id="breakdownDetails">
+        <strong>Website Discount:</strong> <span id="websiteDisc">0%</span><br>
+        <strong>Employee Discount:</strong> 25%<br>
+        <strong>Total Discount:</strong> <span id="totalDisc">25%</span><br>
+        <strong>SM Rate per Class:</strong> $<span id="smRate">18.75</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const bundles = {
+      45: '45 (Beginner)',
+      90: '90 (Intermediate Champion)',
+      150: '150 (Advanced)'
+    };
+    function setClasses(val) {
+      document.getElementById('classes').value = val;
+      document.getElementById('selectedBundle').innerText = bundles[val];
+      calculate();
+    }
+    function toggleBreakdown() {
+      const details = document.getElementById('breakdownDetails');
+      details.classList.toggle('show');
+      const breakdown = event.target.closest('.breakdown');
+      breakdown.setAttribute('aria-expanded', details.classList.contains('show'));
+    }
+    function calculate() {
+      const classes = Number(document.getElementById('classes').value) || 0;
+      const errorMsg = document.getElementById('errorMsg');
+      if (![45, 90, 150].includes(classes)) {
+        errorMsg.style.display = 'block';
+        return;
+      }
+      errorMsg.style.display = 'none';
+      document.getElementById('selectedBundle').innerText = bundles[classes];
+
+      const rate = 25;
+      let websiteDisc = 0;
+      if (classes >= 150) {
+        websiteDisc = 0.25;
+      } else if (classes >= 90) {
+        websiteDisc = 0.10;
+      }
+      const employeeDisc = 0.25;
+      const totalDisc = websiteDisc + employeeDisc;
+      const smPerClass = rate * (1 - totalDisc);
+      const websiteFull = rate * classes;
+      const packagePrice = Math.round(smPerClass * classes);
+      const finalPrice = packagePrice;
+
+      document.getElementById('websitePrice').innerText = Math.round(websiteFull);
+      document.getElementById('finalPrice').innerText = finalPrice;
+
+      // Update breakdown
+      document.getElementById('websiteDisc').innerText = (websiteDisc * 100) + '%';
+      document.getElementById('totalDisc').innerText = (totalDisc * 100) + '%';
+      document.getElementById('smRate').innerText = smPerClass.toFixed(2);
+    }
+    calculate();
+  </script>
